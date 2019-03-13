@@ -23,7 +23,7 @@ class Color:
     @property
     def rgb(self):
         """Convert a hex color to rgb."""
-        return "%s,%s,%s" % (*hex_to_rgb(self.hex_color),)
+        return "{},{},{}".format(*hex_to_rgb(self.hex_color))
 
     @property
     def xrgba(self):
@@ -33,18 +33,20 @@ class Color:
     @property
     def rgba(self):
         """Convert a hex color to rgba."""
-        return "rgba(%s,%s,%s,%s)" % (*hex_to_rgb(self.hex_color),
-                                      int(self.alpha_num)/100)
+        return "rgba({},{},{},{})".format(
+            *hex_to_rgb(self.hex_color),
+            int(self.alpha_num)/100
+        )
 
     @property
     def alpha(self):
         """Add URxvt alpha value to color."""
-        return "[%s]%s" % (self.alpha_num, self.hex_color)
+        return "[{0.alpha_num}]{0.hex_color}".format(self)
 
     @property
     def octal(self):
         """Export color in octal"""
-        return "%s%s" % ("#", oct(int(self.hex_color[1:], 16))[2:])
+        return "{}{}".format("#", oct(int(self.hex_color[1:], 16))[2:])
 
     @property
     def octal_strip(self):
@@ -120,7 +122,7 @@ def hex_to_rgb(color):
 def hex_to_xrgba(color):
     """Convert a hex color to xrdb rgba."""
     col = color.lower().strip("#")
-    return "%s%s/%s%s/%s%s/ff" % (*col,)
+    return "{}{}/{}{}/{}{}/ff".format(*col)
 
 
 def rgb_to_hex(color):
