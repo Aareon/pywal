@@ -112,13 +112,14 @@ def set_mac_wallpaper(img):
     img_dir, _ = os.path.split(img)
 
     # Clear the existing picture data and write the image paths
-    sql = "delete from data; "
-    sql += "insert into data values(\"%s\"); " % img_dir
-    sql += "insert into data values(\"%s\"); " % img
-
-    # Set all monitors/workspaces to the selected image
-    sql += "update preferences set data_id=2 where key=1 or key=2 or key=3; "
-    sql += "update preferences set data_id=1 where key=10 or key=20 or key=30;"
+    # The "UPDATE"s set all monitors/workspaces to the selected image
+    sql = 'DELETE FROM data; \
+          INSERT INTO data VALUES("{}"); \
+          INSERT INTO data VALUES("{}"); \
+          UPDATE preferences SET data_id=2 WHERE key=1 OR key=2 OR key=3; \
+          UPDATE preferences SET data_id=1 WHERE key=10 OR key=20 OR key=30;'.format(
+        img_dir, img
+    )
 
     subprocess.call(["sqlite3", db_path, sql])
 
